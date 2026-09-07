@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>The Unbreakable Vow &bull; Harry &amp; Ginny</title>
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- GSAP & Canvas Confetti -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="locked theme-nox">
+
+  <!-- ================= PARALLAX BACKGROUND VIDEO VIEWPORT ================= -->
+  <div class="parallax-video-viewport" id="videoViewport">
+    <video id="bgHogwartsVideo" class="parallax-video-element" autoplay loop muted playsinline webkit-playsinline preload="auto">
+      <source src="Create_a_grand_cinematic_lands.mp4" type="video/mp4">
+      <source src="video_1.mp4" type="video/mp4">
+    </video>
+    <div class="video-overlay-tint"></div>
+  </div>
+
+  <div class="floating-candles-system" id="candlesSystem" aria-hidden="true"></div>
+
+  <canvas id="fireworksCanvas"></canvas>
+  <canvas id="rosePetalsCanvas"></canvas>
+
+  <div id="wandCursor" aria-hidden="true">
+    <div class="wand-tip-glow"></div>
+    <div class="wand-shaft"></div>
+  </div>
+
+  <div class="mystery-hint" id="mysteryHint">
+    <span>&#10022; Double-Click Wand to Cast Expecto Patronum &#10022;</span>
+  </div>
+
+  <div id="patronusSpell" class="patronus-overlay" aria-hidden="true">
+    <div class="patronus-flash"></div>
+    <div class="patronus-shockwave"></div>
+    <div class="butterflies-wrap" id="butterfliesWrap"></div>
+    <div class="patronus-stag-graphic">
+      <svg viewBox="0 0 200 200" class="stag-svg">
+        <path d="M100 130 C90 120 70 110 70 90 C70 70 85 55 100 55 C115 55 130 70 130 90 C130 110 110 120 100 130 Z" fill="none" stroke="#e0f4ff" stroke-width="3"/>
+        <path d="M90 55 C80 35 60 25 45 30 M70 40 C55 45 40 45 30 55 M110 55 C120 35 140 25 155 30 M130 40 C145 45 160 45 170 55" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M100 130 L100 185 M85 140 L70 190 M115 140 L130 190" fill="none" stroke="#cbe9ff" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <p class="incantation-text">EXPECTO PATRONUM!</p>
+  </div>
+
+  <header class="hud-controls" id="hudControls">
+    <button id="lumosToggle" class="hud-btn" onclick="toggleLumos()">
+      <span class="hud-icon" id="lumosIcon">&#127775;</span>
+      <span class="hud-text" id="lumosText">Lumos</span>
+    </button>
+    <button id="audioToggle" class="hud-btn" onclick="toggleVideoAudio()">
+      <span class="hud-icon" id="soundIcon">&#127926;</span>
+      <span class="hud-text" id="musicText">Soundtrack: Off</span>
+    </button>
+  </header>
+
+  <!-- ================= ENTRANCE STAGE ================= -->
+  <section id="entranceStage" class="entrance-stage">
+    <div class="snitch-card" id="snitchCard">
+      <p class="snitch-kicker">Ministry Enchanted Gateway</p>
+      <h2 class="snitch-heading">Catch the Golden Snitch</h2>
+      <p class="snitch-desc">The wedding invitation is locked within the Snitch's golden core. Catch it to break the ancient wards!</p>
+
+      <div class="snitch-arena">
+        <div class="snitch-orbit-path">
+          <div class="golden-snitch" id="goldenSnitch" onclick="catchSnitch()">
+            <div class="snitch-wing wing-left"></div>
+            <div class="snitch-sphere">
+              <span class="snitch-engraving">&#9884;</span>
+            </div>
+            <div class="snitch-wing wing-right"></div>
+          </div>
+        </div>
+      </div>
+
+      <button class="snitch-override-btn" onclick="catchSnitch()">Catch Snitch &rarr;</button>
+    </div>
+
+    <div class="scroll-scene" id="scrollScene" style="display: none;">
+      <div class="scroll-core" id="scrollCore">
+        <div class="scroll-spindle spindle-top"></div>
+        <div class="scroll-sheet" id="scrollSheet">
+          
+          <div class="scroll-ribbon" id="scrollRibbon"></div>
+          <div class="wax-seal" id="waxSeal" onclick="unfurlScroll()">
+            <div class="wax-seal-face">
+              <span class="seal-letters">H&amp;G</span>
+            </div>
+            <div class="seal-glow"></div>
+          </div>
+
+          <div class="scroll-inner-letter" id="scrollInnerLetter">
+            <div class="letter-crest">&#9884;</div>
+            <p class="letter-kicker">By Imperial Order of the Ministry</p>
+            <h2 class="letter-title">You Are Cordially Summoned</h2>
+            <p class="letter-body">To witness the ancient bonding of two souls in an Unbreakable Vow<br><strong>Harry Potter &amp; Ginny Weasley</strong></p>
+            <span class="letter-pill">Winter Solstice &bull; December 21, 2026</span>
+            <br>
+            <button class="enter-hall-btn" onclick="proceedToHall()">Enter the Great Hall &rarr;</button>
+          </div>
+
+        </div>
+        <div class="scroll-spindle spindle-bottom"></div>
+      </div>
+      <p class="tap-seal-tip" id="tapSealTip">Tap the Wax Seal to Open Your Invitation</p>
+    </div>
+  </section>
+
+  <!-- ================= LIVING SCROLL EXPERIENCE ================= -->
+  <main id="scrollExperience" style="display: none;">
+
+    <section class="section hero-section" id="hero">
+      <div class="hero-content">
+        <div class="crest-frame">
+          <svg viewBox="0 0 120 28" class="crest-svg">
+            <path d="M0 14 Q 30 0, 60 14 T 120 14" stroke="#d4af37" fill="none" stroke-width="2"/>
+          </svg>
+        </div>
+        <p class="eyebrow">The Ministry of Magic Decrees the Eternal Union of</p>
+        <h1 class="main-title">Harry Potter<br><span class="amp">&amp;</span><br>Ginny Weasley</h1>
+        <p class="hero-sub">Where ancient stone remembers, two legends become one destiny</p>
+        <div class="gold-rule"></div>
+        <div class="scroll-indicator">
+          <span>Scroll down to traverse the castle grounds</span>
+          <div class="scroll-pulse"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section clock-section" id="countdown">
+      <div class="clock-ornament">
+        <div class="astronomical-ring ring-outer"></div>
+        <div class="astronomical-ring ring-inner"></div>
+        
+        <div class="clock-body">
+          <p class="clock-label">The Auspicious Alignment</p>
+          <div class="countdown-grid">
+            <div class="countdown-slot"><span class="cd-num" id="cdDays">00</span><span class="cd-tag">Days</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-slot"><span class="cd-num" id="cdHours">00</span><span class="cd-tag">Hours</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-slot"><span class="cd-num" id="cdMins">00</span><span class="cd-tag">Minutes</span></div>
+            <div class="countdown-sep">:</div>
+            <div class="countdown-slot"><span class="cd-num" id="cdSecs">00</span><span class="cd-tag">Seconds</span></div>
+          </div>
+          <p class="wedding-date-str">December 21, 2026 &bull; Winter Solstice Twilight</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HARRY & GINNY WEDDING ALBUM GALLERY (wedding1.jpg & wedding2.jpg) ================= -->
+    <section class="section wedding-gallery-section" id="weddingGallery">
+      <h2 class="section-heading">The Wedding Album</h2>
+      <p class="gallery-sub">Moments captured together forever beneath the Great Hall chandeliers</p>
+      
+      <div class="wedding-frames-grid">
+        <div class="ornate-photo-frame">
+          <div class="inner-frame-gold">
+            <img src="wedding1.jpg" alt="Harry & Ginny Together Forever 1" class="wedding-img" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80'">
+          </div>
+          <p class="frame-caption">Together Forever &bull; The First Sight</p>
+        </div>
+        <div class="ornate-photo-frame">
+          <div class="inner-frame-gold">
+            <img src="wedding2.jpg" alt="Harry & Ginny Together Forever 2" class="wedding-img" onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=700&q=80'">
+          </div>
+          <p class="frame-caption">Together Forever &bull; Eternal Vows</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- STORYLINE FLIP CARDS -->
+    <section class="section story-section" id="story">
+      <h2 class="section-heading">How the Magic Began</h2>
+      <p class="story-subtitle">Tap each enchanted chronicle to reveal its poetic memory</p>
+      
+      <div class="story-cards-grid">
+        <div class="story-card-wrapper" onclick="flipStoryCard(this)">
+          <div class="story-card-inner">
+            <div class="story-card-face story-front">
+              <span class="story-chapter">I &bull; The Station</span>
+              <h3 class="story-heading">A Look Across the Platform</h3>
+              <div class="story-crest-icon">&#9877;</div>
+              <p class="story-hint">Tap to read the poem &rarr;</p>
+            </div>
+            <div class="story-card-face story-back">
+              <h4 class="story-back-title">September 1991</h4>
+              <p class="story-poem">"Steam coiled through scarlet iron,<br>A timid wish amidst the crowd.<br>She saw the boy behind the scar,<br>Before his name was whispered loud."</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="story-card-wrapper" onclick="flipStoryCard(this)">
+          <div class="story-card-inner">
+            <div class="story-card-face story-front">
+              <span class="story-chapter">II &bull; The Burrow</span>
+              <h3 class="story-heading">Midnight by the Copper Hearth</h3>
+              <div class="story-crest-icon">&#128293;</div>
+              <p class="story-hint">Tap to read the poem &rarr;</p>
+            </div>
+            <div class="story-card-face story-back">
+              <h4 class="story-back-title">Summer Whispers</h4>
+              <p class="story-poem">"In kitchens warmed by orchard breeze,<br>Where laugh and quiet shared the floor,<br>The seeker learned to stop his flight,<br>And never need a compass more."</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="story-card-wrapper" onclick="flipStoryCard(this)">
+          <div class="story-card-inner">
+            <div class="story-card-face story-front">
+              <span class="story-chapter">III &bull; The Battle</span>
+              <h3 class="story-heading">Through Fire &amp; Ruin</h3>
+              <div class="story-crest-icon">&#9876;</div>
+              <p class="story-hint">Tap to read the poem &rarr;</p>
+            </div>
+            <div class="story-card-face story-back">
+              <h4 class="story-back-title">May 1998</h4>
+              <p class="story-poem">"When castles crumbled to the ash,<br>And shadows claimed the courtyard stone,<br>Her fierce gaze held the dark at bay,<br>To guide him safely, surely home."</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="story-card-wrapper" onclick="flipStoryCard(this)">
+          <div class="story-card-inner">
+            <div class="story-card-face story-front">
+              <span class="story-chapter">IV &bull; The Lakeside</span>
+              <h3 class="story-heading">The Vow at Sunrise</h3>
+              <div class="story-crest-icon">&#127749;</div>
+              <p class="story-hint">Tap to read the poem &rarr;</p>
+            </div>
+            <div class="story-card-face story-back">
+              <h4 class="story-back-title">Dawn's Promise</h4>
+              <p class="story-poem">"Upon the Black Lake’s silver glass,<br>No hex, no wand, no whispered art;<br>One trembling word, one golden ring,<br>And forever tied within her heart."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- COUPLE CARDS (harry.jpg & jinny.jpg) -->
+    <section class="section couple-section" id="couple">
+      <h2 class="section-heading">The Bound Souls</h2>
+      <div class="couple-cards">
+        <div class="card-character">
+          <div class="portrait-wrapper">
+            <img src="harry.jpg" alt="Harry Potter" class="portrait-img" onerror="this.src='https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=700&q=80'">
+            <div class="portrait-border"></div>
+          </div>
+          <div class="card-info">
+            <h3 class="char-name">Harry James Potter</h3>
+            <p class="char-title">Head Auror &bull; Master of the Snitch</p>
+            <p class="char-bio">"The boy who lived to find peace across the Gryffindor hearth, forever enchanted by lightning courage and scarlet hair."</p>
+          </div>
+        </div>
+
+        <div class="card-character">
+          <div class="portrait-wrapper">
+            <img src="ginny.jpg" alt="Ginny Weasley" class="portrait-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=700&q=80'">
+            <div class="portrait-border"></div>
+          </div>
+          <div class="card-info">
+            <h3 class="char-name">Ginevra Molly Weasley</h3>
+            <p class="char-title">Captain of the Holyhead Harpies</p>
+            <p class="char-bio">"Fierce on a broomstick, peerless with a Bat-Bogey Hex. The heart that held the flame steadfast through the longest dark."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARAUDER'S PATHWAY -->
+    <section class="section timeline-section" id="timeline">
+      <div class="timeline-parchment">
+        <h2 class="section-heading dark-text">The Marauder's Footpath</h2>
+        <p class="timeline-intro">"I solemnly swear that I am up to no good"</p>
+        
+        <div class="itinerary-path-wrap" id="itineraryMap">
+          <div class="leyline-track" id="leylineTrack"></div>
+          
+          <div class="path-stop" data-step="1">
+            <div class="stop-flame"></div>
+            <div class="stop-content">
+              <span class="stop-time">4:30 PM</span>
+              <h4 class="stop-title">The Hogwarts Express Arrival</h4>
+              <p class="stop-desc">Platform 9 &frac34; gates swing open. Warm butterbeer and cauldron cakes served upon the cloister lawns.</p>
+            </div>
+          </div>
+
+          <div class="path-stop" data-step="2">
+            <div class="stop-flame"></div>
+            <div class="stop-content">
+              <span class="stop-time">5:45 PM</span>
+              <h4 class="stop-title">The Binding Rites</h4>
+              <p class="stop-desc">The Whispering Glade, beneath floating candles and starlight. Cords of scarlet and gold interwoven by ancient spellcraft.</p>
+            </div>
+          </div>
+
+          <div class="path-stop" data-step="3">
+            <div class="stop-flame"></div>
+            <div class="stop-content">
+              <span class="stop-time">7:15 PM</span>
+              <h4 class="stop-title">The Great Hall Feast</h4>
+              <p class="stop-desc">Roast meats, treacle tarts, and firewhisky toasts beneath an enchanted ceiling reflecting the constellations.</p>
+            </div>
+          </div>
+
+          <div class="path-stop" data-step="4">
+            <div class="stop-flame"></div>
+            <div class="stop-content">
+              <span class="stop-time">10:00 PM</span>
+              <h4 class="stop-title">The Midnight Ball</h4>
+              <p class="stop-desc">The Weird Sisters play beneath an aurora borealis swirling across the stone vaults.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= 3D HARDCOVER BANQUET MENU BOOK ================= -->
+    <section class="section banquet-section" id="banquet">
+      <h2 class="section-heading">The Great Hall Banquet Menu</h2>
+      <p class="banquet-sub">Turn the parchment leaves of the Banquet Book to view each course</p>
+
+      <div class="menu-flipbook-viewport">
+        <div class="menu-flipbook" id="menuFlipbook">
+          
+          <!-- SPREAD 0: COVER -->
+          <div class="menu-book-page page-cover active" id="mPage0" style="z-index: 6;">
+            <div class="book-sheet-face face-front cover-front">
+              <div class="cover-filigree">
+                <div class="cover-crest">&#9884;</div>
+                <p class="cover-kicker">Hogwarts Castle Kitchens</p>
+                <h3 class="cover-title">The Grand Banquet</h3>
+                <div class="gold-divider"></div>
+                <p class="cover-sub">Curated for the Matrimonial Celebration of Potter &amp; Weasley</p>
+                <button class="open-book-clasp" onclick="turnMenuPage(0, true)">Open Menu &rarr;</button>
+              </div>
+            </div>
+            <div class="book-sheet-face face-back cover-inner-left">
+              <div class="inner-prologue">
+                <span class="order-rune">&#10022;</span>
+                <h4>An Offering of Feast &amp; Magic</h4>
+                <p>All dishes have been prepared with care by the house-elves of Hogwarts, seasoned with winter herbs gathered from Professor Longbottom's greenhouse.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- SPREAD 1 -->
+          <div class="menu-book-page" id="mPage1" style="z-index: 5;">
+            <div class="book-sheet-face face-front">
+              <div class="menu-recipe-spread">
+                <span class="course-label">First Offering &bull; Savory Carvery</span>
+                <h3 class="recipe-name">Roast Prime Rib in Yorkshire Pudding Cups</h3>
+                <div class="dish-photo-frame">
+                  <img src="dish1.png" alt="Roast Prime Rib" class="recipe-img" onerror="this.src='https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=700&q=80'">
+                </div>
+                <p class="recipe-lore">Herb-crusted Aberdeenshire beef resting in golden, crispy Yorkshire puddings with rich red-wine shallot reduction, caramelized winter parsnips, and buttered garden peas.</p>
+                <div class="book-nav-row">
+                  <button class="page-flip-btn" onclick="turnMenuPage(0, false)">&larr; Cover</button>
+                  <button class="page-flip-btn primary" onclick="turnMenuPage(1, true)">Cornish Pasties &rarr;</button>
+                </div>
+              </div>
+            </div>
+            <div class="book-sheet-face face-back"></div>
+          </div>
+
+          <!-- SPREAD 2 -->
+          <div class="menu-book-page" id="mPage2" style="z-index: 4;">
+            <div class="book-sheet-face face-front">
+              <div class="menu-recipe-spread">
+                <span class="course-label">Second Offering &bull; Hand Fare</span>
+                <h3 class="recipe-name">Butterbeer-Glazed Cornish Pasties</h3>
+                <div class="dish-photo-frame">
+                  <img src="dish2.png" alt="Cornish Pasties" class="recipe-img" onerror="this.src='https://images.unsplash.com/photo-1621996346565-e3d5d628165b?auto=format&fit=crop&w=700&q=80'">
+                </div>
+                <p class="recipe-lore">Flaky, golden-crimped shortcrust pockets filled with braised Highland venison, baby leeks, and roasted potatoes, brushed with sweet bubbling butterscotch treacle butter.</p>
+                <div class="book-nav-row">
+                  <button class="page-flip-btn" onclick="turnMenuPage(1, false)">&larr; Previous</button>
+                  <button class="page-flip-btn primary" onclick="turnMenuPage(2, true)">Elixirs &rarr;</button>
+                  <button class="page-flip-btn reset" onclick="resetMenuBook()">&#8634; First Page</button>
+                </div>
+              </div>
+            </div>
+            <div class="book-sheet-face face-back"></div>
+          </div>
+
+          <!-- SPREAD 3 -->
+          <div class="menu-book-page" id="mPage3" style="z-index: 3;">
+            <div class="book-sheet-face face-front">
+              <div class="menu-recipe-spread">
+                <span class="course-label">Third Offering &bull; The Signature Draught</span>
+                <h3 class="recipe-name">Steaming Spiced Butterbeer Draught</h3>
+                <div class="dish-photo-frame">
+                  <img src="dish3.png" alt="Butterbeer" class="recipe-img" onerror="this.src='https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=700&q=80'">
+                </div>
+                <p class="recipe-lore">Served in frosted pewter steins, simmered with Madagascar vanilla, dark brown sugar, and toasted nutmeg, topped with a thick, cold layer of butterscotch marshmallow foam.</p>
+                <div class="book-nav-row">
+                  <button class="page-flip-btn" onclick="turnMenuPage(2, false)">&larr; Previous</button>
+                  <button class="page-flip-btn primary" onclick="turnMenuPage(3, true)">Desserts &rarr;</button>
+                  <button class="page-flip-btn reset" onclick="resetMenuBook()">&#8634; First Page</button>
+                </div>
+              </div>
+            </div>
+            <div class="book-sheet-face face-back"></div>
+          </div>
+
+          <!-- SPREAD 4 -->
+          <div class="menu-book-page" id="mPage4" style="z-index: 2;">
+            <div class="book-sheet-face face-front">
+              <div class="menu-recipe-spread">
+                <span class="course-label">Fourth Offering &bull; Gryffindor Favorite</span>
+                <h3 class="recipe-name">Harry's Honeyed Treacle Tart</h3>
+                <div class="dish-photo-frame">
+                  <img src="dish4.png" alt="Treacle Tart" class="recipe-img" onerror="this.src='https://images.unsplash.com/photo-1519915028121-7d3463d20b13?auto=format&fit=crop&w=700&q=80'">
+                </div>
+                <p class="recipe-lore">Warm Lyle's golden syrup baked into a lattice-crusted sweet pastry with fresh Meyer lemon peel, accompanied by generous quenelles of clotted Cornish cream.</p>
+                <div class="book-nav-row">
+                  <button class="page-flip-btn" onclick="turnMenuPage(3, false)">&larr; Previous</button>
+                  <button class="page-flip-btn primary" onclick="turnMenuPage(4, true)">Spirits &rarr;</button>
+                  <button class="page-flip-btn reset" onclick="resetMenuBook()">&#8634; First Page</button>
+                </div>
+              </div>
+            </div>
+            <div class="book-sheet-face face-back"></div>
+          </div>
+
+          <!-- SPREAD 5 -->
+          <div class="menu-book-page" id="mPage5" style="z-index: 1;">
+            <div class="book-sheet-face face-front">
+              <div class="menu-recipe-spread">
+                <span class="course-label">Fifth Offering &bull; Midnight Toasts</span>
+                <h3 class="recipe-name">Ogden's Old Firewhisky &amp; Cauldron Cakes</h3>
+                <div class="dish-photo-frame">
+                  <img src="dish5.png" alt="Firewhisky" class="recipe-img" onerror="this.src='https://images.unsplash.com/photo-1527061011665-3652c757a4d4?auto=format&fit=crop&w=700&q=80'">
+                </div>
+                <p class="recipe-lore">Charred-oak aged whisky with warming cinnamon heat, served with dark molten chocolate cauldron cupcakes and exploding dragon bonbons for the midnight toast.</p>
+                <div class="book-nav-row">
+                  <button class="page-flip-btn" onclick="turnMenuPage(4, false)">&larr; Previous</button>
+                  <button class="page-flip-btn reset" onclick="resetMenuBook()">&#8634; First Page</button>
+                </div>
+              </div>
+            </div>
+            <div class="book-sheet-face face-back"></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- RSVP SECTION -->
+    <section class="section rsvp-section" id="rsvp">
+      <div class="rsvp-parchment-scroll">
+        <div class="rsvp-scroll-rod top-rod"></div>
+        <div class="rsvp-scroll-body">
+          <span class="rsvp-tag">&#9884; BY OWL POST &bull; THE MINISTRY REGISTRY</span>
+          <h2 class="rsvp-heading">Affirm Your Sacred Attendance</h2>
+          <p class="rsvp-sub">Choose your House crest and inscribe your name upon the enchanted parchment.</p>
+          
+          <form id="magicalRsvpForm" onsubmit="handleFormSubmit(event)">
+            <div class="form-group">
+              <label class="form-label">Name of Attending Witch / Wizard</label>
+              <input type="text" id="guestName" class="form-input" required placeholder="e.g. Luna Lovegood">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Select Your Hogwarts House Crest</label>
+              <div class="house-selector">
+                <button type="button" class="house-btn active" data-house="Gryffindor">&#129409; Gryffindor</button>
+                <button type="button" class="house-btn" data-house="Slytherin">&#128013; Slytherin</button>
+                <button type="button" class="house-btn" data-house="Ravenclaw">&#129413; Ravenclaw</button>
+                <button type="button" class="house-btn" data-house="Hufflepuff">&#129441; Hufflepuff</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Your Intended Attendance</label>
+              <div class="choice-row">
+                <button type="button" class="rsvp-choice selected" data-value="attending">&#10004; Joyfully Bound</button>
+                <button type="button" class="rsvp-choice" data-value="declining">&#10006; Alas, My Owl Flies Elsewhere</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Accompanying Familiars / Companions</label>
+              <input type="number" id="guestCount" class="form-input" min="0" max="4" value="0">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Dietary Enchantments</label>
+              <textarea id="guestNotes" class="form-textarea" rows="2" placeholder="Vegetarian feast, sugar-free, pumpkin allergy..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-spell-btn" id="submitBtn">
+              <span class="btn-text">Seal with Golden Quill</span>
+              <span class="btn-quill-shine"></span>
+            </button>
+          </form>
+
+          <div class="rsvp-success-state" id="rsvpSuccess" hidden>
+            <div class="success-seal">&#10004;</div>
+            <h3>Enchantment Sealed</h3>
+            <p>Your scroll has been dispatched by Ministry owl across the mountains.</p>
+          </div>
+        </div>
+        <div class="rsvp-scroll-rod bottom-rod"></div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="owl-bureau-footer">
+      <div class="bureau-card">
+        <div class="bureau-icon">&#129417;</div>
+        <h3 class="bureau-title">Ministry Owl Post Bureau</h3>
+        <p class="bureau-address"><strong>Floo Network:</strong> The Burrow Hearth &bull; Channel 7<br><strong>Owl Dispatch:</strong> Post Office Square, Hogsmeade Village<br><strong>Hospital Registry:</strong> In lieu of tributes, donations may be sent to St. Mungo's Magical Restoration Fund.</p>
+      </div>
+      <div class="finale-wrap">
+        <p class="finale-eyebrow">Mischief Managed</p>
+        <h2 class="finale-title">Save The Date</h2>
+        <div class="date-hero-display">21 &bull; 12 &bull; 2026</div>
+        <p class="finale-quote">"After all this time?"<br><strong>"Always."</strong></p>
+      </div>
+    </footer>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
