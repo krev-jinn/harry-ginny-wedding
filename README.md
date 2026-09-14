@@ -1,4 +1,4 @@
-# The Unbreakable Vow: Harry & Ginny's Magical Wedding Invitation ⚡🪄
+# The Unbreakable Vow: Harry & Ginny's Magical Wedding Invitation 🪄
 
 A mobile-first, highly immersive interactive digital wedding invitation inspired by the Wizarding World. Designed as a creative design and interaction engineering project.
 
