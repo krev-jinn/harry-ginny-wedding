@@ -6,7 +6,7 @@ A mobile-first, highly immersive interactive digital wedding invitation inspired
 * **Interactive Entrance:** Catch the Golden Snitch and unseal the 3D parchment scroll to enter.
 * **Cinematic Video Parallax:** A continuous high-definition background video that pans smoothly as you scroll down the page.
 * **Lumos / Nox Theme Engine:** Instantly toggle between dark night starlight (Nox) and warm daytime parchment (Lumos) with a rotating celestial horizon.
-* **Magical Sound & Wand Cursor:** Real-time wand cursor with trailing stardust, procedural sparkle chimes, and an integrated video soundtrack toggle.
+* **Magical Sound & Wand Cursor:** Real-time wand-cursor with trailing stardust, procedural sparkle chimes, and an integrated video soundtrack toggle.
 * **Interactive Storyline Cards:** Tap-to-flip parchment cards detailing the romance from Platform 9¾ to the lakeside vow.
 * **The Great Hall Banquet Grimoire:** A true 3D hardcover flip-book showcasing feast courses with mouth-watering descriptions and images.
 * **Enchanted Marauder's Timeline:** Leylines and candle nodes that light up sequentially as you scroll.
