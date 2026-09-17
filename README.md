@@ -9,7 +9,7 @@ A mobile-first, highly immersive interactive digital wedding invitation inspired
 * **Magical Sound & Wand Cursor:** Real-time wand cursor with trailing stardust, procedural sparkle chimes, and an integrated video soundtrack toggle.
 * **Interactive Storyline Cards:** Tap-to-flip parchment cards detailing the romance from Platform 9¾ to the lakeside vow.
 * **The Great Hall Banquet Grimoire:** A true 3D hardcover flip-book showcasing feast courses with mouth-watering descriptions and images.
-* **Enchanted Marauder's Timeline:** Leylines and lantern nodes that light up sequentially as you scroll.
+* **Enchanted Marauder's Timeline:** Leylines and candle nodes that light up sequentially as you scroll.
 * **Owl Post RSVP Registry:** An interactive parchment response form complete with Hogwarts House selectors.
 
 ## 🛠️ Built With
