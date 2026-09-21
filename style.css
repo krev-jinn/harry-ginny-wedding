@@ -65,7 +65,7 @@ body.locked {
   }
 }
 
-/* ================= PARALLAX BACKGROUND VIDEO VIEWPORT ================= */
+/* ================= PARALLAX BACKGROUND VIDEO ================= */
 .parallax-video-viewport {
   position: fixed;
   inset: 0;
