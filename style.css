@@ -882,7 +882,7 @@ body.theme-lumos .countdown-sep { color: var(--wine-dark); }
 .wedding-date-str { font-family: var(--font-body); font-style: italic; font-size: 1.05rem; color: #dec8a0; margin-top: 1.2rem; }
 body.theme-lumos .wedding-date-str { color: #442a12; font-weight: 600; }
 
-/* ================= STORYLINE FLIP CARDS ================= */
+/* ================ FLIP CARD POEMS ================= */
 .story-section { min-height: 90vh; }
 .story-subtitle {
   font-family: var(--font-body);
