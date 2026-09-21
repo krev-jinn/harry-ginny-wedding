@@ -150,7 +150,7 @@ body.locked {
   z-index: 3;
 }
 
-/* ================= WAND CURSOR ================= */
+/* ================ WAND CURSOR ================= */
 #wandCursor {
   position: fixed;
   top: 0;
@@ -199,7 +199,7 @@ body.locked {
   transition: transform 0.9s cubic-bezier(0.1, 0.8, 0.2, 1), opacity 0.9s ease;
 }
 
-/* ================= TOP CONTROLS HUD ================= */
+/* ================ TOP CONTROLS ================= */
 .hud-controls {
   position: fixed;
   top: 18px;
@@ -239,7 +239,7 @@ body.theme-lumos .hud-btn {
   box-shadow: 0 0 14px var(--gold-glow);
 }
 
-/* ================= ENTRANCE STAGE ================= */
+/* =============== ENTRANCE STAGE ================ */
 .entrance-stage {
   position: fixed;
   inset: 0;
