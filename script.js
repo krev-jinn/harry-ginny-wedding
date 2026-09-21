@@ -38,7 +38,7 @@ function updateAudioHUD(isOn) {
   }
 }
 
-/* ================= PROCEDURAL SPARKLE CHIME ON CLICKS ================= */
+/* ================= SPARKLE CHIME ON CLICKS ================= */
 class MagicSparkFX {
   constructor() {
     this.ctx = null;
@@ -101,7 +101,7 @@ class MagicSparkFX {
 
 const fx = new MagicSparkFX();
 
-/* ================= LUMOS / NOX THEME TOGGLE ================= */
+/* ================= LUMOS / NOX (light/dark)THEME TOGGLE ================= */
 function toggleLumos() {
   fx.playSparkle();
   const isLumos = document.body.classList.toggle('theme-lumos');
