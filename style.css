@@ -380,7 +380,7 @@ body.theme-lumos .hud-btn {
   color: #17110d;
 }
 
-/* ================= 3D SCROLL ================= */
+/* ================ 3D SCROLL ================ */
 .scroll-scene {
   position: relative;
   width: min(88vw, 420px);
